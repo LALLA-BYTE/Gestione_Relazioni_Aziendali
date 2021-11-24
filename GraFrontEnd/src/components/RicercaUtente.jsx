@@ -20,7 +20,7 @@ class RicercaUtente extends Component {
             nomeUtente: "",
             password: "",
             dataCreazione: "",
-            idProfiloUtente: "",
+            idProfiloUtente: 0,
             utenti: []
 
         }

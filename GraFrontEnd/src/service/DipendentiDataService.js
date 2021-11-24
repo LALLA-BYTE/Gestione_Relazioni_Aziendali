@@ -35,7 +35,6 @@ class DipendentiDataService {
 
     updateDip(dip, dipId){
 
-        console.log("Entri nel metodo updateDip del service?" + JSON.stringify(dip))
         return axios.put(MODIFICA_DIPENDENTE_URL + '/' + dipId, dip);
     }
 

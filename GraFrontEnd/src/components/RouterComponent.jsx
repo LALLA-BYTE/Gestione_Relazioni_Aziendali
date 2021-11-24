@@ -7,7 +7,7 @@ import ModificaDipendente from './ModificaDipendente';
 import ListaUtenti from './ListaUtenti';
 import ModificaUtente from './ModificaUtente';
 import CreaUtenza from './CreaUtenza';
-import SearchComponent from './SearchComponent';
+import RicercaDipendente from './RicercaDipendente';
 import RicercaUtente from './RicercaUtente';
 import NavbarComponent from './NavbarComponent';
 import LogIn from './LogIn';
@@ -30,7 +30,7 @@ class RouterComponent extends Component {
                             <NavbarComponent />
                             <Sidebar />
                             <Route path="/homepage" exact component={HomePage}></Route>
-                            <Route path="/ricerca-dipendente" component={SearchComponent}></Route>
+                            <Route path="/ricerca-dipendente" component={RicercaDipendente}></Route>
                             <Route path="/ricerca-utente" component={RicercaUtente}></Route>
                             <Route path="/modifica-dipendente" component={ModificaDipendente}></Route>
                             <Route path="/lista-dipendenti" component={ListaDipendenti}></Route>

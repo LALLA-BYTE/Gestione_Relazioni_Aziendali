@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import $ from "jquery";
-import { Row, Container } from 'react-bootstrap';
 import DipendentiDataService from '../service/DipendentiDataService';
 
-class SearchComponent extends Component {
+class RicercaDipendente extends Component {
     constructor(props) {
         super(props)
 
@@ -182,5 +181,5 @@ class SearchComponent extends Component {
 
     }
 
-} export default SearchComponent;
+} export default RicercaDipendente;
 

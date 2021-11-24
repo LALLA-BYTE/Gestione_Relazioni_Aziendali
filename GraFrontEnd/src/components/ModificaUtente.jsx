@@ -22,8 +22,7 @@ class ModificaUtente extends Component {
         this.salvaUtente = this.salvaUtente.bind(this);
         this.tornaIndietro = this.tornaIndietro.bind(this);
         this.getVal = this.getVal.bind(this);
-        this.changePasswordHandler = this.changePasswordHandler.bind(this);
-        this.changeUsernameHandler = this.changeUsernameHandler.bind(this);
+        this.changeInputHandler = this.changeInputHandler.bind(this);
         this.abilitaUtente = this.abilitaUtente.bind(this);
     }
 
@@ -34,7 +33,7 @@ class ModificaUtente extends Component {
 
             let utente = res.data;
 
-            console.log("stampo il cristiano recuperato " + JSON.stringify(utente));
+            //console.log("stampo l'utente recuperato " + JSON.stringify(utente));
 
             this.setState({
                 nomeUtente: utente.nomeUtente, password: utente.password,
@@ -49,13 +48,9 @@ class ModificaUtente extends Component {
                 console.log("stampo il response.data " + JSON.stringify(res.data));
 
                 for (var i = 0; i < this.state.utenze.length; i++) {
-                    /*if(){
-                        delegare a questo if la creazione di un campo option
-                        con la voce selezionata [selected = 'selected']
-                    }*/
+                   
                     if(this.state.utenze[i].id == this.state.idProfiloUtente.id){
 
-                        //console.log("check!")
                         $('#dropdown-content').append(
                             "<option selected='selected' value='" + JSON.stringify(this.state.utenze[i]) +
                             "' name='utenza'>" + this.state.utenze[i].nomeProfilo + "</option>"
@@ -78,12 +73,12 @@ class ModificaUtente extends Component {
     }
 
 
-    salvaUtente = (e) => {
+    salvaUtente = () => {
 
         let utente = {
-
             nomeUtente: this.state.nomeUtente, password: this.state.password,
-            dataCreazione: this.state.dataCreazione, profiloUtenteId: JSON.parse(this.state.utenza)
+            dataCreazione: this.state.dataCreazione, abilitato: this.state.abilitato,
+            profiloUtenteId: this.state.idProfiloUtente
         }
 
         UtentiDataService.updateUtente(utente, this.state.id).then((res) => {
@@ -106,14 +101,9 @@ class ModificaUtente extends Component {
         this.props.history.push("/lista-utenti");
     }
 
-    changeUsernameHandler = (event) => {
+    changeInputHandler = (event) => {
 
-        this.setState({ nomeUtente: event.target.value })
-    }
-
-    changePasswordHandler = (event) => {
-
-        this.setState({ password: event.target.value });
+        this.setState({ [event.target.name]: event.target.value });
     }
 
 
@@ -147,18 +137,18 @@ class ModificaUtente extends Component {
                                     <div className="form-group">
                                         <label>Username: </label>
                                         <input placeholder="Username" name="nomeUtente" className="form-control"
-                                            value={this.state.nomeUtente} onChange={this.changeUsernameHandler} />
+                                            value={this.state.nomeUtente} onChange={this.changeInputHandler} />
                                     </div>
                                     <div className="form-group">
                                         <label>Password: </label>
                                         <input type="text" placeholder="Password" name="password" className="form-control"
-                                            value={this.state.password} onChange={this.changePasswordHandler} />
+                                            value={this.state.password} onChange={this.changeInputHandler} />
                                     </div>
                                     <div className="form-group">
                                         <label>Utenza: </label>
                                         <div className="mb-3">
-                                            <select id='dropdown-content' onChange={this.getVal} className='form-select form-select-lg mb-3' name='ruolo'>
-                                                <option value=''></option>
+                                            <select id='dropdown-content' onChange={this.getVal} className='form-select form-select-lg mb-3' name='utenza'>
+                                                <option value=""></option>
                                             </select>
                                         </div>
                                     </div>

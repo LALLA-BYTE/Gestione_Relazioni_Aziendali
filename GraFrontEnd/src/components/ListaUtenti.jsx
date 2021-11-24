@@ -10,6 +10,7 @@ class ListaUtenti extends Component {
         this.state = {
 
             utenteLoggato: localStorage.getItem("idProfiloUtente"),
+    
             utenti: []
         }
 

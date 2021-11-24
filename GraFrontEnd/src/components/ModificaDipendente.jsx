@@ -14,14 +14,15 @@ class ModificaDipendente extends Component {
             dataAssunzione: '',
             dataNascita: '',
             reparto: '',
-            //ferieGodute: 0,
-            //ferieRimanenti: 0,
+            idRuolo: 0,
+            ferieGodute: 0,
+            ferieRimanenti: 0,
             ruoli: [],
             ruolo: null
         }
 
         this.changeInputHandler = this.changeInputHandler.bind(this);
-        //this.changeFerieHandler = this.changeFerieHandler.bind(this);
+        this.changeFerieHandler = this.changeFerieHandler.bind(this);
         this.salvaModifiche = this.salvaModifiche.bind(this);
        
     }
@@ -32,52 +33,64 @@ class ModificaDipendente extends Component {
         DipendentiDataService.getDipById(this.state.id).then((res) => {
             let dipendente = res.data;
 
-            console.log("stampo il cristiano recuperato " + JSON.stringify(dipendente));
+         //console.log("stampo il dipendente recuperato " + JSON.stringify(dipendente));
 
             this.setState({
                 nome: dipendente.nome, cognome: dipendente.cognome,
                 dataAssunzione: dipendente.dataAssunzione, dataNascita: dipendente.dataNascita,
-                reparto: dipendente.reparto, idRuolo: dipendente.idRuolo.nomeRuolo,
-                //ferieGodute: dipendente.ferieGodute, ferieRimanenti: dipendente.ferieRimanenti
+                reparto: dipendente.reparto, idRuolo: dipendente.idRuolo,
+                ferieGodute: dipendente.ferieGodute, ferieRimanenti: dipendente.ferieRimanenti
             });
         });
 
         DipendentiDataService.getRuoli().then((response) => {
             this.setState({ ruoli: response.data });
-            console.log("stampo il responde.data " + JSON.stringify(response.data));
-            console.log(this.state.ruoli);
-
+            console.log("stampo il response.data " + JSON.stringify(response.data));
+        
             for (var i = 0; i < this.state.ruoli.length; i++) {
-                $('#dropdown-content').append(
-                    "<option value=" + JSON.stringify(this.state.ruoli[i]) +
-                    " name='ruolo'>" + this.state.ruoli[i].nomeRuolo + "</option>"
-                );
+                if(this.state.ruoli[i].id == this.state.idRuolo.id){
+           
+                    console.log("entri nell'if?");
+
+                    $('#dropdown-content').append(
+                        "<option selected='selected' value='" + JSON.stringify(this.state.ruoli[i]) +
+                        "' name='utenza'>" + this.state.ruoli[i].nomeRuolo + "</option>"
+                    );
+
+                } else {
+                    $('#dropdown-content').append(
+                        "<option value=" + JSON.stringify(this.state.ruoli[i]) +
+                        " name='ruolo'>" + this.state.ruoli[i].nomeRuolo + "</option>"
+                    );
+
+                }
+
             }
-            console.log("stampo ruoli: " + this.state.ruoli);
+            
         });
     }
 
     salvaModifiche = (e) => {
         e.preventDefault();
 
-        //let maxFerie = 28;
+        let maxFerie = 28;
+        let sommaFerie = parseInt(this.state.ferieGodute) + parseInt(this.state.ferieRimanenti);
 
-        //let sommaFerie = parseInt(this.state.ferieGodute) + parseInt(this.state.ferieRimanenti);
         let dipendente = {
             nome: this.state.nome, cognome: this.state.cognome, dataAssunzione: this.state.dataAssunzione,
             dataNascita: this.state.dataNascita, reparto: this.state.reparto, 
-            idRuolo: JSON.parse(this.state.ruolo), //ferieGodute: sommaFerie
+            idRuolo: this.state.idRuolo, ferieGodute: sommaFerie
         };
         console.log('dipendente =>' + JSON.stringify(dipendente));
 
-       {/* if (parseInt(this.state.ferieGodute) > parseInt(maxFerie)) {
+        if (parseInt(this.state.ferieGodute) > parseInt(maxFerie)) {
             alert("Hai superato i giorni di ferie a disposizione!")
         } else {
             DipendentiDataService.updateDip(dipendente, this.state.id).then(res => {
                 console.log("stampo il response.data: " + JSON.stringify(res.data));
                 this.props.history.push("/lista-dipendenti");
             });
-        }*/}
+        }
 
     }
 
@@ -91,7 +104,7 @@ class ModificaDipendente extends Component {
         this.setState({ [e.target.name]: e.target.value });
     }
 
-      /* changeFerieHandler = (e) => {
+       changeFerieHandler = (e) => {
 
         if (e.target.value < 0) {
             alert("Attenzione. Hai inserito un numero negativo");
@@ -99,7 +112,7 @@ class ModificaDipendente extends Component {
             alert("Attenzione. Non è possibile superare i 28 giorni di ferie!");
         }
         this.setState({ ferieGodute: e.target.value });
-    }*/
+    }
 
     getVal = (event) => {
         this.setState({ ruolo: event.target.value});
@@ -161,12 +174,12 @@ class ModificaDipendente extends Component {
                                                 value={28} disabled={true} />
                                         </label>
                                     </div>
-                                    {/*<div className="form-group">
+                                    <div className="form-group">
                                         <label> Richiedi Ferie:
                                             <input type="number" name="ferieGodute" className="form-control"
                                                 value={this.state.ferieGodute} onChange={this.changeFerieHandler} />
                                         </label>
-                                    </div>*/}
+                                    </div>
                                     <div>
                                         <button style={{ marginTop: "10px" }} onClick={this.salvaModifiche}>Salva</button>
                                         <button style={{ marginTop: "10px" }} onClick={this.tornaIndietro.bind(this)} style={{ marginLeft: "10px" }}>Indietro</button>

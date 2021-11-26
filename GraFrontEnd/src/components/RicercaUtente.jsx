@@ -54,8 +54,12 @@ class RicercaUtente extends Component {
             console.log("stampo il res.data => " + JSON.stringify(res.data))
            
             if (res.data == "" ) {
-                $("#risultati").text("Nessun risultato trovato");
 
+                $("#risultati").text("NESSUN RISULTATO TROVATO").css({color: "#a30505"});
+                setTimeout(function () {
+                    $("#risultati").text("");
+                }, 500 * 8);
+               
             } else {
                 
                 $("#risultati").text("");

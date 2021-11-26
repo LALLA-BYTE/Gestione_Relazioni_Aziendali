@@ -45,7 +45,13 @@ class RicercaDipendente extends Component {
             console.log("stampo il res.data => " + JSON.stringify(res.data))
 
             if (res.data == "") {
-                $("#risultati").text("Nessun risultato trovato");
+
+                $("#risultati").text("NESSUN RISULTATO TROVATO").css({color: "#a30505"});
+
+                setTimeout(function () {
+                    $("#risultati").text("");
+                }, 500 * 8);
+
             } else {
 
                 $("#risultati").text("");
@@ -66,6 +72,7 @@ class RicercaDipendente extends Component {
         this.setState({ check1: false });
         this.setState({ check2: false });
         this.setState({ check3: false });
+        
     }
 
     onChangeHandler = (e) => {
@@ -86,7 +93,6 @@ class RicercaDipendente extends Component {
 
         // e.preventDefault();
 
-        console.log("sono nel metodo stampa tabella " + JSON.stringify(this.state.dipendenti));
         if (this.state.ricerca) {
 
             return (
@@ -103,7 +109,9 @@ class RicercaDipendente extends Component {
                                         <th>Data di nascita</th>
                                         <th>Reparto</th>
                                         <th>Ruolo</th>
-                                        <th>Azioni</th>
+                                        {this.state.utenteLoggato === "1" ?
+                                            (<th>Azioni</th>)
+                                            : ""}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,9 +124,12 @@ class RicercaDipendente extends Component {
                                             <td>{dipendente.reparto}</td>
                                             <td>{dipendente.idRuolo.nomeRuolo}</td>
                                             <td>
-                                                <button onClick={() => this.modificaDipendente(dipendente.id)}>Modifica</button>
-                                                <button style={{ marginLeft: "10px" }} onClick={() => this.eliminaDipendente(dipendente.id)}>Elimina</button>
-
+                                                {this.state.utenteLoggato === "1" ?
+                                                    (<button onClick={() => this.modificaDipendente(dipendente.id)}>Modifica</button>)
+                                                    : ""}
+                                                {this.state.utenteLoggato === "1" ?
+                                                    (<button style={{ marginLeft: "10px" }} onClick={() => this.eliminaDipendente(dipendente.id)}>Elimina</button>)
+                                                    : ""}
                                             </td>
                                         </tr>
                                     )}
@@ -138,7 +149,7 @@ class RicercaDipendente extends Component {
                     <div className="row">
                         <div className="card col-md-6 offset-md-3 offset-md-3"></div>
                         <h4 className="text-centerrr" style={{ marginTop: "10px" }}>RICERCA DIPENDENTI</h4>
-                        <hr/>
+                        <hr />
                         <h5 className="text-centerrr" style={{ marginTop: "10px" }}>Inserisci filtri di ricerca: </h5>
                         <div>
                             <form onSubmit={this.onSubmit.bind(this)}>
@@ -172,7 +183,7 @@ class RicercaDipendente extends Component {
                             </form>
                         </div>
                     </div>
-                    <div id="risultati">{this.mostraRisultati()}</div>
+                    <div  style={{ marginTop: "10px" }} id="risultati">{this.mostraRisultati()}</div>
                 </div>
             </div >
 
